@@ -11,7 +11,8 @@ Works in any editor that runs luau-lsp: VS Code, Neovim, Zed, and more.
 ## Features
 
 - Full instance-tree autocomplete from any script, as shown above.
-- Module autocomplete. `require()` calls resolve to their files, so `require(game.ScriptService.MyModule)` or `require(script.Parent.MyModule)` shows the module's members instead of `any`. Why `game` and not `world`? See [Typed require()](#typed-require).
+- Module autocomplete. `require()` calls resolve to their files, so `require(game.ScriptService.MyModule)` or `require(script.Parent.MyModule)` shows the module's members instead of `any`. 
+  Why `game` and not `world`? See [Typed require()](#typed-require).
 - Repairs `def.d.luau` for current (1.69+) luau-lsp, patches the `world` global so the sourcemap tree is reachable, and removes the Creator's `require()` declaration so luau-lsp's own magic module resolution takes over.
 - A `--watch` mode that regenerates the sourcemap whenever your world changes.
 
