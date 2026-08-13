@@ -113,7 +113,7 @@ The `roblox` platform loads Roblox's bundled types. To reduce the clutter you do
 
 ## Development
 Go 1.26.5+
-```
+```bash
 go build .
 ```
 
