@@ -1,0 +1,4 @@
+/polysource
+/dist/
+*.exe
+.vscode/*
