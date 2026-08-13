@@ -51,7 +51,7 @@ const (
 	ProgramName = "polysource"
 
 	SourcemapUsage = "  " + ProgramName + " [flags] <project-dir>\t\tgenerate sourcemap (default)"
-	DefsUsage      = "  " + ProgramName + " defs [flags] <project-dir>\t\tconvert def.d.luau to new syntax"
+	DefsUsage      = "  " + ProgramName + " defs [flags] <project-dir>\t\tgenerate a modernized and patched copy of def.d.luau"
 
 	LuauFolderPath = ".poly/luau/"
 	DefFileName    = "def.d.luau"
