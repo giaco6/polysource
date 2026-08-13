@@ -98,9 +98,15 @@ The `roblox` platform loads Roblox's bundled types. To reduce the clutter you do
 
 ## Known limitations
 
-- Roblox properties and methods appear on types that share a name with Roblox classes.
-  Because the sourcemap only works when the platform is set to Roblox, luau-lsp loads Roblox's types alongside Polytoria's. A `Part` therefore shows Roblox properties, events and methods like `:FindFirstChild()` next to Polytoria's own.
-  Fixing this requires luau-lsp supporting sourcemaps off the `roblox` platform.
+- Roblox types and members leak into autocomplete. Because the sourcemap only
+  works when the platform is set to Roblox, luau-lsp loads Roblox's types
+  alongside Polytoria's:
+
+  - A `Part` shows Roblox members like `:FindFirstChild()` next to Polytoria's own.
+  - Roblox-only types (e.g. `Frame`, `RemoteEvent`) show up in completions even
+    though they don't exist in Polytoria.
+
+  Fixing this requires luau-lsp supporting sourcemaps off the Roblox platform.
 
 - `:FindChild()` and similar methods are not autocompleted. Only dot and bracket indexing are. Autocompleting method calls like `world:FindChild("...")` would require hardcoding knowledge of the method into the language server.
 
