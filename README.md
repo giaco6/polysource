@@ -61,13 +61,15 @@ Pass a specific world file with `--world`.
 
 ## Editor setup
 
-Required:
+Change these luau-lsp settings in the settings UI or file of you editor of choice.
 
 - `luau-lsp.sourcemap.enabled: true`
 - `luau-lsp.sourcemap.generatorCommand: "polysource --watch ."`
 - `luau-lsp.platform.type: "roblox"` (sourcemap processing only runs on the `roblox` platform)
 
-To load the repaired type definitions, add the generated file to the `luau-lsp.types.definitionFiles` setting and point it at `.poly/luau/def.modern.luau`. Run `polysource defs .` once to create it.
+Run `polysource defs .` to create the repaired and patched definition file.
+To load the repaired type definitions, add the generated `.poly/luau/def.modern.luau` to the `luau-lsp.types.definitionFiles` setting.
+If you don't want the updated syntax, use the `--legacy` flag.
 
 The `roblox` platform loads Roblox's bundled types. To reduce the clutter you do not need, disable globals through `luau-lsp.types.disabledGlobals`, for example:
   ```json
