@@ -108,6 +108,7 @@ The `roblox` platform loads Roblox's bundled types. To reduce the clutter you do
 - One sourcemap per world. Use `--world` to target a different world.
 
 ## Development
+Go 1.26.5+
 ```
 go build .
 ```
