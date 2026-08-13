@@ -35,7 +35,7 @@ Two ways to get typed modules:
       local MyModule: typeof(require(game.ScriptService.MyModule)) = require(world.ScriptService.MyModule)
   
   The `typeof(...)` gives the game-rooted type while the runtime value still comes from world.
-  `game` has all of `world`'s children, as luau-lsp always treats it like the root of the instance tree, and gets ignored at runtime.
+  `game` has all of `world`'s children, as luau-lsp always treats it as the root of the instance tree, and gets ignored at runtime.
 
 ## Install
 
