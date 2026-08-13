@@ -110,7 +110,7 @@ The `roblox` platform loads Roblox's bundled types. To reduce the clutter you do
 
 - `:FindChild()` and similar methods are not autocompleted. Only dot and bracket indexing are. Autocompleting method calls like `world:FindChild("...")` would require hardcoding knowledge of the method into the language server.
 
-- Typed `require()` calls need `game` or `script`, not `world`. See [Typed require()](#typed-require) above.
+- Typed `require()` calls need `game` or `script`. See [Typed require()](#typed-require) above.
 
 - The `world` global is typed as `World & DataModel`. It keeps Polytoria's World API while letting the sourcemap attach the instance tree to it.
   Also, when indexing `world` with `Instance.Parent` it shows up as only `DataModel`.
