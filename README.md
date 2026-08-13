@@ -25,14 +25,16 @@ Luau-lsp resolves its own `require()` function only against the hardcoded values
 Two ways to get typed modules:
 
 - `require()` relative to the current script:
-
-      local MyModule = require(script.Parent.MyModule)
+    ```luau
+    local MyModule = require(script.Parent.MyModule)
+    ```
 
   Fully typed, but the path can be awkward to write.
 
 - Keep using `world` or other global instances at runtime, and type it with a game-rooted `require()`:
-
-      local MyModule: typeof(require(game.ScriptService.MyModule)) = require(world.ScriptService.MyModule)
+    ```luau
+    local MyModule: typeof(require(game.ScriptService.MyModule)) = require(world.ScriptService.MyModule)
+    ```
   
   The `typeof(...)` gives the game-rooted type while the runtime value still comes from world.
   `game` has all of `world`'s children, as luau-lsp always treats it as the root of the instance tree, and gets ignored at runtime.
