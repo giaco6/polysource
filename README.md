@@ -1,6 +1,6 @@
 # polysource
 
-External editor tooling for Polytoria 2.0. polysource reads the project's `.poly` world and writes a `sourcemap.json` that luau-lsp can read, giving you autocomplete for the entire instance tree. It also repairs the type definitions the Creator generates so they work with current luau-lsp, and lets you require modules with resolved types.
+External editor tooling for Polytoria 2.0. polysource reads the project's `.poly` world and writes a `sourcemap.json` that [JohnnyMorganz's luau-lsp](https://github.com/JohnnyMorganz/luau-lsp) can read, giving you autocomplete for the entire instance tree. It also repairs the type definitions the Creator generates so they work with current luau-lsp, and lets you require modules with resolved types.
 
 Works in any editor that runs luau-lsp: VS Code, Neovim, Zed, and more.
 
