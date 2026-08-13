@@ -98,7 +98,7 @@ The `roblox` platform loads Roblox's bundled types. To reduce the clutter you do
 
 ## Known limitations
 
-- Roblox methods appear on types that share a name with Roblox classes.
+- Roblox properties and methods appear on types that share a name with Roblox classes.
   Because the sourcemap only works when the platform is set to Roblox, luau-lsp loads Roblox's types alongside Polytoria's. A `Part` therefore shows Roblox properties, events and methods like `:FindFirstChild()` next to Polytoria's own.
   Fixing this requires luau-lsp supporting sourcemaps off the `roblox` platform.
 
