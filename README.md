@@ -42,7 +42,7 @@ Two ways to get typed modules:
 ## Install
 
 - Have Go installed?
-    ```
+    ```bash
     go install github.com/giaco6/polysource@latest
     ```
   This builds the current version and installs `polysource` into your Go bin folder (usually `~/go/bin`). Make sure that folder is on your PATH.
@@ -51,7 +51,7 @@ Two ways to get typed modules:
 
 ## Usage
 
-```
+```bash
 polysource .                # generate sourcemap.json in the current project
 polysource --watch .        # regenerate whenever the world changes
 polysource defs .           # repair def.d.luau and write def.modern.luau
