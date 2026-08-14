@@ -99,7 +99,6 @@ The `roblox` platform loads Roblox's bundled types. To reduce the clutter you do
 ## Known limitations
 
 - Roblox types and members leak into autocomplete. Because the sourcemap only works when the platform is set to `roblox`, luau-lsp loads Roblox's types alongside Polytoria's.
-
   Fixing this requires luau-lsp supporting sourcemaps off the `roblox` platform.
 
 - `:FindChild()` and similar methods are not autocompleted. Only dot and bracket indexing are. Autocompleting method calls like `world:FindChild("...")` would require hardcoding knowledge of the method into the language server.
