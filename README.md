@@ -20,7 +20,7 @@ Some tradeoffs come with this, detailed under [Known limitations](#known-limitat
 
 ## Typed require()
 
-Luau-lsp resolves its own `require()` function only against the hardcoded values `game` and `script`, so `require(world.ScriptService.MyModule)` is typed `any` (though `world.ScriptService.MyModule` still autocompletes).
+Luau-lsp resolves its own `require()` function only against the hardcoded values like `game` and `script`, so `require(world.ScriptService.MyModule)` is typed `any` (though `world.ScriptService.MyModule` still autocompletes).
 
 Two ways to get typed modules:
 
@@ -30,6 +30,7 @@ Two ways to get typed modules:
     ```
 
   Fully typed, but the path can be awkward to write.
+  This is the reccomended way to do it.
 
 - Keep using `world` or other global instances at runtime, and type it with a game-rooted `require()`:
     ```luau
@@ -38,6 +39,8 @@ Two ways to get typed modules:
   
   The `typeof(...)` gives the game-rooted type while the runtime value still comes from world.
   `game` has all of `world`'s children, as luau-lsp always treats it as the root of the instance tree, and gets ignored at runtime.
+
+Every option besides plain `script`-relative `require()` is a workaround around luau-lsp's hardcoded resolution, each with its own edge cases (like exported types not showing up): use them at your own discretion.
 
 ## Install
 
@@ -98,19 +101,14 @@ The `roblox` platform loads Roblox's bundled types. To reduce the clutter you do
 
 ## Known limitations
 
-- Roblox types and members leak into autocomplete. Because the sourcemap only
-  works when the platform is set to Roblox, luau-lsp loads Roblox's types
-  alongside Polytoria's:
-
-  - A `Part` shows Roblox members like `:FindFirstChild()` next to Polytoria's own.
-  - Roblox-only types (e.g. `Frame`, `RemoteEvent`) show up in completions even
-    though they don't exist in Polytoria.
-
-  Fixing this requires luau-lsp supporting sourcemaps off the Roblox platform.
+- Roblox types and members leak into autocomplete. Because the sourcemap only works when the platform is set to `roblox`, luau-lsp loads Roblox's types alongside Polytoria's.
+  Fixing this requires luau-lsp supporting sourcemaps off the `roblox` platform.
 
 - `:FindChild()` and similar methods are not autocompleted. Only dot and bracket indexing are. Autocompleting method calls like `world:FindChild("...")` would require hardcoding knowledge of the method into the language server.
 
 - Typed `require()` calls need `game` or `script`. See [Typed require()](#typed-require) above.
+
+- A module's exported `type`s aren't reachable through the `game`-rooted `typeof()` workaround. Referencing an exported type needs specific `require()` paths, the easiest one being `script`-relative.
 
 - The `world` global is typed as `World & DataModel`. It keeps Polytoria's World API while letting the sourcemap attach the instance tree to it.
   Also, when indexing `world` with `Instance.Parent` it shows up as only `DataModel`.
