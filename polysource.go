@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/klauspost/compress/zstd"
@@ -64,6 +65,8 @@ const (
 	SourcemapFileName = "sourcemap.json"
 
 	WriteFilePerm = 0o644
+
+	DebounceTimeMs = 10
 )
 
 var (
@@ -176,21 +179,15 @@ func convertDefs(root string, legacyFlag bool) error {
 
 	dstPath := filepath.Join(root, LuauFolderPath, NewDefFileName)
 
-	oldData, err := os.ReadFile(dstPath)
-	if err != nil && !errors.Is(err, os.ErrNotExist) {
-		return err
-	}
-
-	if bytes.Equal(out, oldData) {
-		fmt.Println("already converted\nnothing to do")
-		return nil
-	}
-
-	if err := os.WriteFile(dstPath, out, WriteFilePerm); err != nil {
+	wrote, err := writeIfChanged(dstPath, out)
+	if err != nil {
 		return fmt.Errorf("write defs: %w", err)
 	}
-
-	fmt.Printf("wrote %s\nadd \"./%s\" to luau-lsp.types.definitionFiles in your VS Code user settings\n", dstPath, filepath.Join(LuauFolderPath, NewDefFileName))
+	if wrote {
+		fmt.Printf("wrote %s\nadd \"./%s\" to luau-lsp.types.definitionFiles in your editor's settings\n", dstPath, filepath.Join(LuauFolderPath, NewDefFileName))
+	} else {
+		fmt.Println("already converted\nnothing to do")
+	}
 
 	return nil
 }
@@ -254,17 +251,22 @@ func watchWorld(root string, path string) error {
 	}
 
 	if err := generate(root, path); err != nil {
-		return err
+		fmt.Fprintln(os.Stderr, "error:", err)
 	}
 	fmt.Println("listening for changes in " + dstPath)
 
+	var debounce *time.Timer
 	for {
 		select {
 		case <-w.Events:
-			err = generate(root, path)
-			if err != nil {
-				return err
+			if debounce != nil {
+				debounce.Stop()
 			}
+			debounce = time.AfterFunc(DebounceTimeMs*time.Millisecond, func() {
+				if err := generate(root, path); err != nil {
+					fmt.Fprintln(os.Stderr, "error:", err)
+				}
+			})
 		case err := <-w.Errors:
 			return err
 		}
@@ -300,22 +302,24 @@ func scanMetaFiles(root string) (map[string]string, error) {
 
 		data, err := os.ReadFile(path)
 		if err != nil {
-			return err
+			fmt.Fprintf(os.Stderr, "warn: skipping %s: %v\n", d.Name(), err)
+			return nil
 		}
 
 		var meta struct {
 			ID string `json:"id"`
 		}
 		if err := json.Unmarshal(data, &meta); err != nil {
-			return err
+			fmt.Fprintf(os.Stderr, "warn: skipping %s: %v\n", d.Name(), err)
+			return nil
 		}
 
-		path, err = filepath.Rel(root, path)
+		relPath, err := filepath.Rel(root, path)
 		if err != nil {
-			return err
+			return err // Unreachable
 		}
 
-		metas[meta.ID] = filepath.ToSlash(strings.TrimSuffix(path, MetaFileExt))
+		metas[meta.ID] = filepath.ToSlash(strings.TrimSuffix(relPath, MetaFileExt))
 
 		return nil
 	})
@@ -370,21 +374,26 @@ func emitSourcemap(root string, sourcemap *Node) error {
 
 	dstPath := filepath.Join(root, SourcemapFileName)
 
-	oldData, err := os.ReadFile(dstPath)
-	if err != nil && !errors.Is(err, os.ErrNotExist) {
+	wrote, err := writeIfChanged(dstPath, out)
+	if err != nil {
 		return err
 	}
-
-	if bytes.Equal(out, oldData) {
+	if wrote {
+		fmt.Printf("wrote %s\n", dstPath)
+	} else {
 		fmt.Println("sourcemap up to date")
-		return nil
 	}
-
-	if err := os.WriteFile(dstPath, out, WriteFilePerm); err != nil {
-		return err
-	}
-
-	fmt.Printf("wrote %s\n", dstPath)
 
 	return nil
+}
+
+func writeIfChanged(path string, data []byte) (wrote bool, err error) {
+	old, err := os.ReadFile(path)
+	if err != nil && !errors.Is(err, os.ErrNotExist) {
+		return false, err
+	}
+	if bytes.Equal(data, old) {
+		return false, nil
+	}
+	return true, os.WriteFile(path, data, WriteFilePerm)
 }
