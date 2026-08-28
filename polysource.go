@@ -155,7 +155,11 @@ func runSourcemap(args []string) error {
 
 func resolveRoot(fs *flag.FlagSet) (string, error) {
 	if len(fs.Args()) == 1 {
-		return filepath.Abs(fs.Args()[0])
+		abs, err := filepath.Abs(fs.Args()[0])
+		if err != nil {
+			return "", fmt.Errorf("resolve root: %w", err)
+		}
+		return abs, nil
 	} else {
 		fs.Usage()
 		os.Exit(2)
@@ -239,7 +243,7 @@ func readWorldFile(root, filename string) (*PolyWorld, error) {
 func watchWorld(root string, path string) error {
 	w, err := fsnotify.NewWatcher()
 	if err != nil {
-		return err
+		return fmt.Errorf("create watcher: %w", err)
 	}
 	defer w.Close()
 
@@ -247,7 +251,7 @@ func watchWorld(root string, path string) error {
 
 	err = w.Add(dstPath)
 	if err != nil {
-		return err
+		return fmt.Errorf("watch %s: %w", dstPath, err)
 	}
 
 	if err := generate(root, path); err != nil {
@@ -268,7 +272,7 @@ func watchWorld(root string, path string) error {
 				}
 			})
 		case err := <-w.Errors:
-			return err
+			return fmt.Errorf("watcher: %w", err)
 		}
 	}
 }
@@ -376,7 +380,7 @@ func emitSourcemap(root string, sourcemap *Node) error {
 
 	wrote, err := writeIfChanged(dstPath, out)
 	if err != nil {
-		return err
+		return fmt.Errorf("write sourcemap: %w", err)
 	}
 	if wrote {
 		fmt.Printf("wrote %s\n", dstPath)
