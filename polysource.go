@@ -222,7 +222,7 @@ func readWorldFile(root, filename string) (*PolyWorld, error) {
 	} else {
 		decoder, err := zstd.NewReader(nil, zstd.WithDecoderConcurrency(0))
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("create zstd decoder: %w", err)
 		}
 		defer decoder.Close()
 
