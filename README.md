@@ -20,7 +20,7 @@ Some tradeoffs come with this, detailed under [Known limitations](#known-limitat
 
 ## Typed require()
 
-Luau-lsp resolves its own `require()` function only against the hardcoded values like `game` and `script`, so `require(world.ScriptService.MyModule)` is typed `any` (though `world.ScriptService.MyModule` still autocompletes).
+Luau-lsp resolves its own `require()` function only against hardcoded values like `game` and `script`, so `require(world.ScriptService.MyModule)` is typed `any` (though `world.ScriptService.MyModule` still autocompletes).
 
 Two ways to get typed modules:
 
