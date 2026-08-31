@@ -66,7 +66,7 @@ Pass a specific world file with `--world`.
 
 ## Editor setup
 
-Change these luau-lsp settings in the settings UI or file of you editor of choice.
+Change these luau-lsp settings in the settings UI or file of your editor of choice.
 
 - `luau-lsp.sourcemap.enabled: true`
 - `luau-lsp.sourcemap.generatorCommand: "polysource --watch ."`
