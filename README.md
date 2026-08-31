@@ -111,7 +111,7 @@ The `roblox` platform loads Roblox's bundled types. To reduce the clutter, disab
 - A module's exported `type`s aren't reachable through the `game`-rooted `typeof()` workaround. Referencing an exported type needs specific `require()` paths, the easiest one being `script`-relative.
 
 - The `world` global is typed as `World & DataModel`. It keeps Polytoria's World API while letting the sourcemap attach the instance tree to it.
-  Also, when indexing `world` with `Instance.Parent` it shows up as only `DataModel`.
+  Also, when indexing `world` by using `Instance.Parent` it shows up as only `DataModel`.
 
 - One sourcemap per world. Use `--world` to target a different world.
 
