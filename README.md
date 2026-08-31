@@ -73,7 +73,7 @@ Change these luau-lsp settings in the settings UI or file of your editor of choi
 - `luau-lsp.platform.type: "roblox"` (sourcemap processing only runs on the `roblox` platform)
 
 Run `polysource defs .` to create the repaired and patched definition file.
-To load the repaired type definitions, add the generated `.poly/luau/def.modern.luau` to the `luau-lsp.types.definitionFiles` setting.
+To load the repaired type definitions, add the generated `.poly/luau/def.modern.luau` to `luau-lsp.types.definitionFiles` in the settings.
 If you don't want the updated syntax, use the `--legacy` flag.
 
 The `roblox` platform loads Roblox's bundled types. To reduce the clutter you do not need, disable globals through `luau-lsp.types.disabledGlobals`, for example:
