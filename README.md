@@ -112,7 +112,7 @@ The `roblox` platform loads Roblox's bundled types. To reduce the clutter, disab
 
 - To access a Linked Model's children you need to open/edit it so its children are in the instance tree.
 
-- Multiple `Script` instances linked to the same file can lead to weird outcomes.
+- If a file has multiple `Script` instances linked to it luau-lsp will only read one as it expects one file per instance.
 
 - The `world` global is typed as `World & DataModel`. It keeps Polytoria's World API while letting the sourcemap attach the instance tree to it.
   Also, when indexing `world` by using `Instance.Parent` it shows up as only `DataModel`.
