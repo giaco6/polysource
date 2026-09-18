@@ -79,6 +79,13 @@ Change these luau-lsp settings in the settings UI or file of your editor of choi
 
 Run `polysource defs .` to write the definition file.
 To load it, add the generated `.poly/luau/def.new.luau` to `luau-lsp.types.definitionFiles` in the settings.
+```json
+{
+    "luau-lsp.types.definitionFiles": {
+        "polytoria": "./.poly/luau/def.new.luau",
+    },
+}
+```
 
 The `roblox` platform loads Roblox's bundled types. To reduce the clutter, disable globals through `luau-lsp.types.disabledGlobals`, for example:
   ```json
