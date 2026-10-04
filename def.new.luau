@@ -1516,6 +1516,7 @@ declare extern type NPC extends Physical with
 	read HoldingTool: Tool
 	read SittingIn: Seat
 	read Character: CharacterModel
+    Vertical: Vector3
 	MoveTarget: Dynamic
 	read IsOnGround: boolean
 	read IsOnCeiling: boolean
